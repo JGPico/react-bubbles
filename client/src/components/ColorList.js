@@ -6,7 +6,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, updateColors, update, setUpdate }) => {
   // console.log("Colors prop", colors);
   const [editing, setEditing] = useState(false);
   const [adding, setAdding] = useState(false);
@@ -38,6 +38,7 @@ const ColorList = ({ colors, updateColors }) => {
       console.log("Update response ", res);
       updateColors(colors);
       console.log("Update Colors after response set", colors);
+      setUpdate(!update);
     })
     .catch(err => {
       console.log("Update error ", err);
@@ -52,17 +53,20 @@ const ColorList = ({ colors, updateColors }) => {
     .then(res => {
       console.log("Delete response ", res);
       updateColors(colors);
+      setUpdate(!update);
     })
     .catch(err => {
       console.log("Delete error ", err);
     })
   };
 
-  const addColor = color => {
+  const addColor = e => {
+    e.preventDefault();
     axiosWithAuth()
     .post('/api/colors', colorToAdd)
     .then(res => {
       console.log("Add response ", res);
+      setUpdate(!update);
     })
     .catch(err => {
       console.log("Add error ", err);
